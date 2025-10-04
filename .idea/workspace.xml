@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="036fbd47-68cf-4460-b512-ec6456a48fe8" name="Changes" comment="Add initial version of Pittsburgh crime dashboard&#10;&#10;- Scatter plot for CMU neighborhoods&#10;- Choropleth map for high-threat crime density">
-      <change afterPath="$PROJECT_DIR$/portfolio.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="036fbd47-68cf-4460-b512-ec6456a48fe8" name="Changes" comment="Add initial version of portfolio.py for Streamlit app" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -73,7 +70,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1759554260932</updated>
-      <workItem from="1759554261970" duration="2574000" />
+      <workItem from="1759554261970" duration="2889000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial version of Pittsburgh crime dashboard&#10;&#10;- Scatter plot for CMU neighborhoods&#10;- Choropleth map for high-threat crime density">
       <option name="closed" value="true" />
@@ -83,7 +80,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759555426812</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Add initial version of portfolio.py for Streamlit app">
+      <option name="closed" value="true" />
+      <created>1759556916807</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1759556916807</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -107,6 +112,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add initial version of Pittsburgh crime dashboard&#10;&#10;- Scatter plot for CMU neighborhoods&#10;- Choropleth map for high-threat crime density" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add initial version of Pittsburgh crime dashboard&#10;&#10;- Scatter plot for CMU neighborhoods&#10;- Choropleth map for high-threat crime density" />
+    <MESSAGE value="Add initial version of portfolio.py for Streamlit app" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add initial version of portfolio.py for Streamlit app" />
   </component>
 </project>
