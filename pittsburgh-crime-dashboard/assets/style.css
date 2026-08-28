@@ -1,0 +1,302 @@
+/* Visual design only -- no analytical behavior lives here. */
+
+:root {
+  --font-family: "Inter", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --color-text: #1f2328;
+  --color-muted: #57606a;
+  --color-border: #e1e4e8;
+  --color-bg: #f6f8fa;
+  --color-card: #ffffff;
+  --color-accent: #b23b3b;
+  --radius: 10px;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.08);
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.page {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-3) var(--space-4);
+}
+
+h1 {
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0 0 6px 0;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 var(--space-2) 0;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: var(--color-muted);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.disclaimer {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #7a2e2e;
+  background: #fdecec;
+  border: 1px solid #f6cfcf;
+  border-radius: 999px;
+  padding: 4px 12px;
+  margin-bottom: var(--space-3);
+}
+
+.card {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--space-3);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Methodology disclosure                                                  */
+/* ---------------------------------------------------------------------- */
+
+.methodology {
+  margin-bottom: var(--space-3);
+}
+
+.methodology summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 10px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-card);
+  list-style: none;
+}
+
+.methodology summary::-webkit-details-marker {
+  display: none;
+}
+
+.methodology summary::before {
+  content: "▸ ";
+  color: var(--color-muted);
+}
+
+.methodology[open] summary::before {
+  content: "▾ ";
+}
+
+.methodology-body {
+  padding: var(--space-2) var(--space-2) 2px;
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+.methodology-body li {
+  margin-bottom: 6px;
+}
+
+/* ---------------------------------------------------------------------- */
+/* KPI cards                                                                */
+/* ---------------------------------------------------------------------- */
+
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.kpi-card {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--space-2);
+}
+
+.kpi-label {
+  font-size: 13px;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 6px;
+}
+
+.kpi-value {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.kpi-note {
+  font-size: 12px;
+  color: var(--color-muted);
+  margin-top: 4px;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Control bar                                                             */
+/* ---------------------------------------------------------------------- */
+
+.control-bar {
+  margin-bottom: var(--space-2);
+}
+
+.control-bar-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-3);
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.control-hint {
+  font-size: 12px;
+  color: var(--color-muted);
+  margin-top: var(--space-2);
+}
+
+.control-scope-note {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-accent);
+  margin-top: 4px;
+}
+
+.control-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Segmented-control look for RadioItems */
+.segmented {
+  display: inline-flex;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--color-bg);
+}
+
+.segmented label {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  border-right: 1px solid var(--color-border);
+  margin: 0 !important;
+}
+
+.segmented label:last-child {
+  border-right: none;
+}
+
+.segmented input {
+  margin-right: 6px;
+}
+
+.segmented-sm label {
+  padding: 5px 11px;
+  font-size: 13px;
+}
+
+/* Dropdown -- cover both legacy and current dash-core-components class names */
+.category-select .Select-control,
+.category-select .select-control,
+.category-select div[class*="-control"] {
+  border: 1px solid var(--color-border) !important;
+  border-radius: 8px !important;
+  min-height: 38px !important;
+  font-family: var(--font-family);
+  font-size: 14px;
+}
+
+.category-select {
+  min-width: 260px;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Sections / comparison layout                                            */
+/* ---------------------------------------------------------------------- */
+
+.section {
+  margin-bottom: var(--space-4);
+}
+
+.section-intro {
+  font-size: 14px;
+  color: var(--color-muted);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.comparison-row {
+  display: flex;
+  gap: var(--space-2);
+  align-items: stretch;
+}
+
+.comparison-row > .choropleth-card {
+  flex: 55 1 0;
+  min-width: 0;
+}
+
+.comparison-row > .ranking-card {
+  flex: 45 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.ranking-card-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--space-1);
+}
+
+.chart-caption {
+  font-size: 12px;
+  color: var(--color-muted);
+  margin: 6px 2px 0;
+}
+
+.campus-section {
+  background: #fbfaf8;
+}
+
+@media (max-width: 900px) {
+  .comparison-row {
+    flex-direction: column;
+  }
+  .kpi-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
