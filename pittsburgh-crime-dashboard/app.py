@@ -29,7 +29,8 @@ TOP_N_OPTIONS = [
     {"label": "All", "value": 0},  # 0 is a sentinel for "no limit" (see update_figures)
 ]
 
-GRAPH_CONFIG = {"scrollZoom": True, "displayModeBar": False}
+GRAPH_CONFIG = {"scrollZoom": True, "displayModeBar": False, "responsive": True}
+GRAPH_STYLE = {"height": "560px", "width": "100%"}
 
 METRIC_HELP_TEXT = (
     "Normalized metrics (per sq mi, per 1,000 residents) support cross-neighborhood comparison; "
@@ -146,8 +147,8 @@ def build_dash_app(rates_by_category, city_rates_by_category, geojson_data,
         html.Div([
             html.H2("Neighborhood comparison"),
             html.P(
-                "The map always shows all 90 Pittsburgh neighborhoods with a valid area; the "
-                "ranking chart on the right can be limited to the highest-density subset.",
+                "The map shows all 90 Pittsburgh neighborhoods with a valid area; the ranking "
+                "chart can be limited to the top-ranked neighborhoods under the selected metric.",
                 className="section-intro",
             ),
 
@@ -181,7 +182,7 @@ def build_dash_app(rates_by_category, city_rates_by_category, geojson_data,
 
             html.Div([
                 html.Div(
-                    dcc.Graph(id="choropleth", config=GRAPH_CONFIG, style={"height": "560px"}),
+                    dcc.Graph(id="choropleth", config=GRAPH_CONFIG, style=GRAPH_STYLE),
                     className="card choropleth-card",
                 ),
                 html.Div([
@@ -195,7 +196,7 @@ def build_dash_app(rates_by_category, city_rates_by_category, geojson_data,
                             labelClassName="segmented-label",
                         ),
                     ], className="ranking-card-header"),
-                    dcc.Graph(id="ranking", config=GRAPH_CONFIG, style={"height": "560px", "flex": "1"}),
+                    dcc.Graph(id="ranking", config=GRAPH_CONFIG, style={**GRAPH_STYLE, "flex": "1"}),
                     html.P(RANKING_CAPTION, className="chart-caption"),
                 ], className="card ranking-card"),
             ], className="comparison-row"),
@@ -204,9 +205,7 @@ def build_dash_app(rates_by_category, city_rates_by_category, geojson_data,
         html.Div([
             html.H2("Campus area: nighttime incidents by hour"),
             html.P(CAMPUS_CAPTION, className="section-intro"),
-            dcc.Graph(
-                figure=campus_scatter_fig, config=GRAPH_CONFIG, style={"height": "560px"},
-            ),
+            dcc.Graph(figure=campus_scatter_fig, config=GRAPH_CONFIG, style=GRAPH_STYLE),
         ], className="section campus-section card"),
     ], className="page")
 

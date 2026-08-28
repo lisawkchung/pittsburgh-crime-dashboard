@@ -246,27 +246,47 @@ def build_campus_scatter_figure(df_nighttime):
         zoom=13,
     )
 
+    # A single short line here, not the two-line _chart_title treatment:
+    # the section heading in app.py ("Campus area: nighttime incidents by
+    # hour") already carries the full description, so this only needs to
+    # add the specifics (time window, scope) without repeating it.
     start_label = _format_hour(NIGHTTIME_HOUR_RANGES[0][0])
     end_label = _format_hour(NIGHTTIME_HOUR_RANGES[1][1])
     _apply_shared_layout(
         fig,
-        title=_chart_title(
-            "Campus area incidents by hour",
-            f"{start_label}–{end_label} · CMU-adjacent neighborhoods",
+        title=dict(
+            text=f"{start_label}–{end_label} · CMU-adjacent neighborhoods",
+            font=dict(size=14, family=FONT_FAMILY, color="#57606a"),
         ),
         legend=dict(
+            title=dict(text=""),
             orientation="h",
             yanchor="bottom",
             y=1.18,
             xanchor="center",
             x=0.5,
         ),
-        margin={"l": 0, "r": 0, "t": 130, "b": 10},
+        # Left/right margin, plus a slider narrower than the full plot width
+        # and pushed clear of the play/pause buttons, leave room for the
+        # first ("5 PM") and last ("2 AM") tick labels to render without
+        # being clipped against the card edge or the buttons -- display-only
+        # positioning, does not touch the underlying frames/animation.
+        margin={"l": 10, "r": 45, "t": 110, "b": 10},
         dragmode="zoom",
         hovermode="closest",
         uirevision=True,
     )
-    fig.update_layout(sliders=[dict(currentvalue=dict(prefix="Time: "), pad=dict(b=10, t=10))])
+    # update_layout merges into the existing (px-generated) sliders[0]/
+    # updatemenus[0] by index rather than replacing them, so the animation
+    # steps/buttons themselves are untouched -- only x/len position move.
+    fig.update_layout(
+        sliders=[dict(
+            x=0.16, len=0.78,
+            currentvalue=dict(prefix="Time: "),
+            pad=dict(b=10, t=10),
+        )],
+        updatemenus=[dict(x=0.02)],
+    )
 
     for trace in fig.data:
         if trace.name != "High Threat":

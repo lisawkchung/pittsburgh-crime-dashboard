@@ -185,7 +185,7 @@ h2 {
 .control-scope-note {
   font-size: 12px;
   font-weight: 600;
-  color: var(--color-accent);
+  color: var(--color-muted);
   margin-top: 4px;
 }
 

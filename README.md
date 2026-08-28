@@ -6,16 +6,16 @@ lens on campus-area awareness and housing decisions, that visualizes
 student-oriented set of categories, and normalized into comparable rates
 across every Pittsburgh neighborhood.
 
-The broader "safety analytics" framing describes the product's purpose —
+The broader "safety analytics" framing describes the product's purpose:
 supporting safety-related decisions like housing and campus-area awareness.
 The dashboard's actual outputs are always described in precise terms:
 **reported incidents**, **reported incident density**, **reported incidents
 per square mile per year**. It does not estimate personal victimization risk
-— see below.
+(see below).
 
 > **What this is:** a descriptive visualization of reported-incident density
-> — where incidents were reported, normalized by area and (secondarily) by
-> residential population — built to support practical decisions like housing
+> (where incidents were reported, normalized by area and, secondarily, by
+> residential population), built to support practical decisions like housing
 > and campus-area awareness.
 >
 > **What this is not:** a prediction of crime, a measure of personal risk or
@@ -40,7 +40,7 @@ per square mile per year**. It does not estimate personal victimization risk
   2. **A ranking chart** of the same neighborhoods with approximate
      uncertainty bars and a city-wide reference line.
   3. **A campus-area nighttime scatter map** (CMU-adjacent neighborhoods,
-     5pm-2am) — the one view still scoped to campus rather than the whole city.
+     5pm-2am), the one view still scoped to campus rather than the whole city.
 - Publishes a **coverage audit** (in-app and in
   [`docs/category_coverage.md`](docs/category_coverage.md)) reconciling every
   incident in the window to exactly one status: student-relevant, out of
@@ -66,7 +66,7 @@ is no local copy or cache of the data in this repository.
 ## Architecture / workflow
 
 The code is split into four modules under `pittsburgh-crime-dashboard/`,
-each with one responsibility. No classes, no framework beyond Dash/Plotly —
+each with one responsibility. No classes, no framework beyond Dash/Plotly:
 kept as simple as the problem allows.
 
 ```
@@ -100,17 +100,25 @@ build_dash_app()   -- layout + metric/category selector callback
 main()             -- runs the pipeline above, then app.run()
 ```
 
-Network requests only happen inside `main()`/`load_and_prepare_data()` —
+Network requests only happen inside `main()`/`load_and_prepare_data()`;
 importing any module does not trigger HTTP calls, which keeps everything
 testable.
 
 ## Setup
 
-Requires Python 3.10+.
+macOS / Linux:
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+Windows:
+
+```bash
+py -m venv .venv
+.venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
@@ -134,7 +142,7 @@ pytest
 Tests cover the pure data-transformation and analysis logic (offense
 normalization, taxonomy structure, incident deduplication, coverage status,
 rate computation, Poisson intervals, city baselines) plus the API-fetching
-functions with `requests` mocked — no test depends on the live API.
+functions with `requests` mocked; no test depends on the live API.
 
 ## Regenerating the coverage report
 
@@ -157,7 +165,7 @@ offense rows.
   `Report_Number` (ties broken by the lowest internal record ID). This is
   when the underlying record shows a small number of same-`Report_Number`
   rows disagree on neighborhood, date, or coordinates (well under 1% of
-  multi-row incidents) — almost always a legitimate supplemental report
+  multi-row incidents), almost always a legitimate supplemental report
   (e.g. an assault later updated to a homicide, or a stolen vehicle logged
   as recovered elsewhere), not a data error.
 - **Coordinates:** taken from the canonical row if present; otherwise from
@@ -166,7 +174,7 @@ offense rows.
   never pulled from a row in a different neighborhood, since that would
   silently relocate the incident.
 - **Two records with no `Report_Number` at all** (out of 101,562 raw rows)
-  are dropped outright — they cannot be attributed to any incident.
+  are dropped outright: they cannot be attributed to any incident.
 
 ### Category membership is overlapping, by design
 
@@ -175,7 +183,7 @@ to two categories. This dashboard does **not** force each incident into one
 dominant category. Concretely:
 
 - The **incident table** (`build_incident_table`) has exactly one row per
-  `Report_Number` — the overall incident count.
+  `Report_Number`: the overall incident count.
 - The **incident-category bridge** (`build_incident_category_bridge`) has
   one row per `(Report_Number, category)` for every category the incident's
   offenses touch.
@@ -188,7 +196,7 @@ dominant category. Concretely:
 ### Student-oriented taxonomy (heuristic, not an official classification)
 
 Four categories, keyed on `NIBRS_Offense_Code` (a cleaner join key than the
-free-text offense description — 58 distinct codes, a handful of known
+free-text offense description: 58 distinct codes, a handful of known
 truncated/blank variants fixed in `normalize_offense_codes`):
 
 | Category | Offense codes |
@@ -199,35 +207,36 @@ truncated/blank variants fixed in `normalize_offense_codes`):
 | **Auto & Parking** | motor vehicle theft, theft from vehicle, theft of vehicle parts |
 
 This is a manually authored regrouping reflecting what a student might
-reasonably care about — **not** a NIBRS severity classification and not
-validated against any external standard. Two things worth knowing about it:
+reasonably care about. It is **not** a NIBRS severity classification and has
+not been validated against any external standard. Two things worth knowing
+about it:
 
-- **Aggravated assault is in `High Threat`**, not `Everyday Risks` — it is
+- **Aggravated assault is in `High Threat`**, not `Everyday Risks`: it is
   a Part I violent felony, not a minor offense.
 - **`23H All Other Larceny` is in `Property & Theft`.** This is a broad
   NIBRS catch-all category (bicycle theft, package theft, and many other
-  larceny types), not specifically residential/burglary-related — it is
+  larceny types), not specifically residential/burglary-related; it is
   grouped here because it is theft, not because every instance touches
   housing decisions specifically.
 
 ### Exclusions: two different reasons, not one "Other" bucket
 
-Records outside the four categories fall into two **distinct** buckets —
-conflating them would misrepresent real crime as noise:
+Records outside the four categories fall into two **distinct** buckets,
+since conflating them would misrepresent real crime as noise:
 
 - **Administrative / unresolvable** (`EXCLUDED_ADMINISTRATIVE_CODES`):
   `9999` (a non-NIBRS vehicle-offense administrative code), `90Z` ("All
-  Other Offenses" — uninterpretable), and any offense code with no
+  Other Offenses", uninterpretable), and any offense code with no
   resolvable value. These are not valid crime observations.
 - **Out of scope** (`OUT_OF_SCOPE_CODES`): drug/narcotic offenses, vice,
   fraud/financial crimes, shoplifting, and several other Group B offenses.
-  **These are real, validly reported offenses** — they are excluded only
+  **These are real, validly reported offenses**: they are excluded only
   because they fall outside this product's student-safety question, not
   because they didn't happen.
 
 Every incident in the analysis window gets exactly one mutually exclusive
-**coverage status** — `student_relevant`, `out_of_scope`, or
-`administrative` — based on the highest-priority offense it contains (an
+**coverage status**: `student_relevant`, `out_of_scope`, or
+`administrative`, based on the highest-priority offense it contains (an
 incident with any student-relevant offense is `student_relevant`, even if
 it also has an out-of-scope offense). This status is used only for the
 coverage audit; it does not affect or restrict the (overlapping)
@@ -265,10 +274,10 @@ accumulates.
   District, South Side Flats). A high per-resident rate in those
   neighborhoods may reflect more people being present, not a higher chance
   of any one person being involved in an incident. **Neither metric is
-  "risk" or "exposure-adjusted risk"** — no data source here captures how
+  "risk" or "exposure-adjusted risk"**: no data source here captures how
   much time any person actually spends in a given place.
-- **Raw incident count** is kept as a selectable metric for transparency —
-  so the effect of normalization is visible by contrast — but it is not a
+- **Raw incident count** is kept as a selectable metric for transparency,
+  so the effect of normalization is visible by contrast, but it is not a
   valid basis for comparing neighborhoods (see Limitations).
 - Two neighborhoods (`Arlington`, `Arlington Heights`) have area but no
   separate population figure in the source data (it's published as a single
@@ -281,7 +290,7 @@ accumulates.
 The choropleth now covers **every Pittsburgh neighborhood with a valid
 area** (90, up from a curated 31 in an earlier version), so the comparison
 set isn't cherry-picked. The **campus scatter map remains scoped to the 8
-CMU-adjacent neighborhoods** (`CAMPUS_NEIGHBORHOODS`) — that view is
+CMU-adjacent neighborhoods** (`CAMPUS_NEIGHBORHOODS`); that view is
 intentionally local, not city-wide.
 
 ### Approximate uncertainty intervals
@@ -290,13 +299,13 @@ Neighborhood-level rates carry **approximate 95% Poisson confidence
 intervals** (Byar's approximation) on the underlying incident count,
 converted to the same rate units.
 
-- These describe **sampling variability in the observed count only** — not
+- These describe **sampling variability in the observed count only**, not
   reporting bias, not measurement error, and not "true" risk variation.
 - The Poisson assumption is imperfect: incidents can cluster in space and
   time (repeat addresses, repeat offenders), which tends to make true
   variability **wider** than a Poisson model implies.
 - **Overlap or non-overlap of two intervals is not a formal hypothesis
-  test.** This dashboard never labels a comparison "significant" — at most,
+  test.** This dashboard never labels a comparison "significant"; at most,
   "this ranking difference is not well supported by the data."
 - Because categories overlap (see above), intervals are **not independent
   across categories** and must not be combined.
@@ -305,7 +314,7 @@ converted to the same rate units.
 
 Each neighborhood's rate is also compared to a **leave-one-out city
 baseline** (the rest of the city, excluding that neighborhood), expressed as
-a rate ratio — e.g. "2.3x the city-wide reported incident density." This
+a rate ratio (e.g. "2.3x the city-wide reported incident density"). This
 avoids a large neighborhood inflating its own comparator. For
 population-normalized baselines, the pool is restricted to neighborhoods
 with a valid population figure (see above).
@@ -313,8 +322,8 @@ with a valid population figure (see above).
 ### Why there is no predictive model
 
 This phase deliberately does not add one. A model predicting neighborhood
-incident counts would be dominated by each neighborhood's stable base rate —
-"last period's rate" would be a comparably good predictor — and the label
+incident counts would be dominated by each neighborhood's stable base rate:
+"last period's rate" would be a comparably good predictor, and the label
 being predicted is *reported* incidents, which bakes in reporting and
 patrol patterns as much as actual crime. Neighborhood-level crime
 prediction is also a well-documented source of feedback loops that reinforce
@@ -330,13 +339,13 @@ gap.
   probability that any individual will experience an incident at a given
   place or time.
 - **Ambient/daytime population is not available.** This is the central,
-  unresolved limitation of the population-normalized metric — see
+  unresolved limitation of the population-normalized metric; see
   "Denominators" above. No public data source gives a daytime or
   student-specific population denominator.
 - **Uncertainty intervals are approximate**, not a substitute for formal
   hypothesis testing, and likely understate true variability due to
   spatial/temporal clustering. See "Approximate uncertainty intervals" above.
-- **No predictive modeling** — see "Why there is no predictive model" above.
+- **No predictive modeling**: see "Why there is no predictive model" above.
 - **Live, uncached, single-snapshot data.** Each run re-downloads all three
   data sources; there is no historical versioning, scheduled refresh, or
   offline fallback if WPRDC is unavailable.
@@ -346,9 +355,9 @@ gap.
   the app fails fast with a validation error rather than silently producing
   wrong output.
 - **The offense taxonomy is a value judgment**, documented but not
-  independently validated — see "Student-oriented taxonomy" above and
+  independently validated; see "Student-oriented taxonomy" above and
   `docs/category_coverage.md` for exactly how much of the data it covers.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE).
