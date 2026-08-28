@@ -6,6 +6,8 @@ lens on campus-area awareness and housing decisions, that visualizes
 student-oriented set of categories, and normalized into comparable rates
 across every Pittsburgh neighborhood.
 
+![Pittsburgh Neighborhood Safety Analytics Dashboard: KPI cards, metric and category controls, and the neighborhood comparison and campus sections](docs/images/dashboard-overview.png)
+
 The broader "safety analytics" framing describes the product's purpose:
 supporting safety-related decisions like housing and campus-area awareness.
 The dashboard's actual outputs are always described in precise terms:
@@ -39,21 +41,29 @@ per square mile per year**. It does not estimate personal victimization risk
      and the five category views above.
   2. **A ranking chart** of the same neighborhoods with approximate
      uncertainty bars and a city-wide reference line.
-
-     ![Neighborhood comparison: choropleth map and ranking chart side by side](docs/images/neighborhood-comparison.png)
-
   3. **A campus-area nighttime scatter map** (CMU-adjacent neighborhoods,
      5pm-2am), the one view still scoped to campus rather than the whole city.
-
-     ![Campus-area nighttime incidents by hour, with the animation slider](docs/images/campus-nighttime.png)
 - Publishes a **coverage audit** (in-app and in
   [`docs/category_coverage.md`](docs/category_coverage.md)) reconciling every
   incident in the window to exactly one status: student-relevant, out of
   scope, or administrative.
 
-## Screenshots
+## Dashboard views
 
-![Dashboard overview: KPI cards, metric/category controls, and the neighborhood comparison and campus sections](docs/images/dashboard-overview.png)
+### Neighborhood comparison
+
+Compare reported-incident density across all 90 Pittsburgh neighborhoods for
+the selected metric and category, with approximate uncertainty intervals and
+a city-wide reference rate shown alongside the ranking.
+
+![Neighborhood comparison: choropleth map and ranking chart side by side](docs/images/neighborhood-comparison.png)
+
+### Campus-area nighttime patterns
+
+This animated view explores reported incidents in CMU-adjacent neighborhoods
+between 5 PM and 2 AM, broken out by hour and by student-oriented category.
+
+![Campus-area nighttime incidents by hour, with the animation slider](docs/images/campus-nighttime.png)
 
 ## Data source
 
